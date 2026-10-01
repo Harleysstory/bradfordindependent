@@ -41,8 +41,40 @@
     });
   }
 
+  /* ---------- Header: condensed glass state once the page scrolls ---------- */
+  var header = document.querySelector(".site-header");
+  if (header) {
+    var onHeaderScroll = function () {
+      header.classList.toggle("is-scrolled", window.scrollY > 8);
+    };
+    onHeaderScroll();
+    window.addEventListener("scroll", onHeaderScroll, { passive: true });
+  }
+
   /* ---------- Scroll reveals (skipped when reduced motion is preferred) ---------- */
   var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Hero background parallax (subtle; disabled for reduced motion) ---------- */
+  var heroFigure = document.querySelector(".hero-figure");
+  if (heroFigure && !prefersReduced) {
+    var ticking = false;
+    var parallax = function () {
+      if (!ticking) {
+        window.requestAnimationFrame(function () {
+          var y = window.scrollY;
+          if (y < 900) {
+            /* keep the CSS centring (-50%) and add a gentle counter-drift */
+            heroFigure.style.transform =
+              "translateY(calc(-50% - " + (y * 0.07).toFixed(1) + "px))";
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    parallax();
+    window.addEventListener("scroll", parallax, { passive: true });
+  }
   var revealEls = document.querySelectorAll(".reveal");
 
   if (!prefersReduced && "IntersectionObserver" in window && revealEls.length) {
