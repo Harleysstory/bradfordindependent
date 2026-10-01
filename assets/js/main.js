@@ -54,26 +54,25 @@
   /* ---------- Scroll reveals (skipped when reduced motion is preferred) ---------- */
   var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Hero background parallax (subtle; disabled for reduced motion) ---------- */
-  var heroFigure = document.querySelector(".hero-figure");
-  if (heroFigure && !prefersReduced) {
+  /* ---------- Hero background drift (subtle; disabled for reduced motion) ---------- */
+  var hero = document.querySelector(".hero");
+  if (hero && !prefersReduced) {
     var ticking = false;
-    var parallax = function () {
+    var drift = function () {
       if (!ticking) {
         window.requestAnimationFrame(function () {
           var y = window.scrollY;
           if (y < 900) {
-            /* keep the CSS centring (-50%) and add a gentle counter-drift */
-            heroFigure.style.transform =
-              "translateY(calc(-50% - " + (y * 0.07).toFixed(1) + "px))";
+            hero.style.backgroundPosition =
+              "center calc(50% - " + (y * 0.06).toFixed(1) + "px)";
           }
           ticking = false;
         });
         ticking = true;
       }
     };
-    parallax();
-    window.addEventListener("scroll", parallax, { passive: true });
+    drift();
+    window.addEventListener("scroll", drift, { passive: true });
   }
   var revealEls = document.querySelectorAll(".reveal");
 
