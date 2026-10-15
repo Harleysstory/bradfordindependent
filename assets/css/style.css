@@ -967,6 +967,138 @@ strong { color: var(--navy); }
   text-align: center;
 }
 
+/* ---------- Case-study visual component ----------
+   Pattern A (.case-visual): featured visual panel — heading, large diagram,
+   takeaway caption, optional "view larger".
+   Pattern B (.case-visual--split): explanatory copy and diagram side by side,
+   stacking on mobile. */
+.case-visual {
+  margin-block: clamp(2.25rem, 5vw, 3.5rem);
+}
+.case-visual-copy { min-width: 0; }
+.case-visual-head { margin-bottom: 1.1rem; }
+.case-visual-head .eyebrow { margin-bottom: 0.5rem; }
+.case-visual-head h3 {
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  margin: 0;
+}
+.case-visual-panel {
+  border: 1px solid var(--mist);
+  border-radius: var(--radius-l);
+  background:
+    radial-gradient(40rem 20rem at 85% 0%, rgba(0, 166, 166, 0.08), transparent 60%),
+    linear-gradient(160deg, var(--navy-2), var(--navy));
+  padding: clamp(0.6rem, 1.5vw, 1.25rem);
+}
+.case-visual-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--radius-l) - 4px);
+}
+.case-visual figcaption { margin-top: 0.8rem; }
+.case-visual-caption {
+  margin: 0;
+  max-width: 46rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.case-visual-source {
+  margin: 0.4rem 0 0;
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+.case-visual-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0;
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--blue);
+  cursor: pointer;
+}
+.case-visual-zoom::before { content: "⤢"; color: var(--teal); }
+.case-visual-zoom:hover { color: var(--teal); }
+/* enhancement only: hidden until JS is available */
+html:not(.js) .case-visual-zoom { display: none; }
+
+/* Pattern B — copy and diagram side by side (stacks below 48rem) */
+.case-visual--split {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.case-visual--split .case-visual-copy { grid-column: 1; grid-row: 1; }
+.case-visual--split .case-visual-panel { grid-column: 2; grid-row: 1; }
+.case-visual--split figcaption { grid-column: 2; grid-row: 2; margin-top: 0.8rem; }
+@media (max-width: 48rem) {
+  .case-visual--split { grid-template-columns: 1fr; }
+  .case-visual--split .case-visual-copy,
+  .case-visual--split .case-visual-panel,
+  .case-visual--split figcaption {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+/* ---------- Diagram lightbox ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(5, 13, 23, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.lightbox.is-open { display: flex; }
+.lightbox-figure {
+  margin: 0;
+  max-width: min(94rem, 100%);
+  text-align: center;
+}
+.lightbox-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 82vh;
+  margin-inline: auto;
+  border: 1px solid rgba(245, 247, 248, 0.18);
+  border-radius: var(--radius-m);
+}
+.lightbox-caption {
+  max-width: 60rem;
+  margin: 1rem auto 0;
+  color: var(--mist-on-dark);
+  font-size: 0.95rem;
+}
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 247, 248, 0.3);
+  background: rgba(11, 31, 51, 0.7);
+  color: var(--paper-on-dark);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-close:hover { border-color: var(--teal); color: var(--teal-bright); }
+.lightbox :focus-visible { outline-color: var(--amber); }
+
 .placeholder-note {
   display: flex;
   gap: 0.8em;

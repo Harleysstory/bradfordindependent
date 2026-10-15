@@ -120,6 +120,65 @@
     }
   }
 
+  /* ---------- Diagram lightbox ("View larger diagram") ---------- */
+  (function () {
+    var triggers = Array.prototype.slice.call(document.querySelectorAll(".case-visual-zoom"));
+    if (!triggers.length) return;
+
+    var overlay = null, img = null, caption = null, closeBtn = null, lastFocus = null;
+
+    function build() {
+      overlay = document.createElement("div");
+      overlay.className = "lightbox";
+      overlay.setAttribute("role", "dialog");
+      overlay.setAttribute("aria-modal", "true");
+      overlay.innerHTML =
+        '<button class="lightbox-close" type="button" aria-label="Close diagram view">&times;</button>' +
+        '<figure class="lightbox-figure">' +
+        '<img class="lightbox-img" src="" alt="">' +
+        '<figcaption class="lightbox-caption"></figcaption>' +
+        '</figure>';
+      document.body.appendChild(overlay);
+      img = overlay.querySelector(".lightbox-img");
+      caption = overlay.querySelector(".lightbox-caption");
+      closeBtn = overlay.querySelector(".lightbox-close");
+      overlay.addEventListener("click", function (e) {
+        if (e.target === overlay || e.target.closest(".lightbox-close")) close();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (!overlay.classList.contains("is-open")) return;
+        if (e.key === "Escape") { e.preventDefault(); close(); }
+        if (e.key === "Tab") { e.preventDefault(); closeBtn.focus(); }
+      });
+    }
+
+    function open(trigger) {
+      if (!overlay) build();
+      var fig = trigger.closest(".case-visual");
+      var sourceImg = fig ? fig.querySelector(".case-visual-panel img") : null;
+      var cap = fig ? fig.querySelector(".case-visual-caption") : null;
+      lastFocus = trigger;
+      img.src = trigger.getAttribute("data-full") || (sourceImg ? sourceImg.currentSrc || sourceImg.src : "");
+      img.alt = sourceImg ? sourceImg.alt : "";
+      caption.textContent = cap ? cap.textContent : "";
+      overlay.setAttribute("aria-label", trigger.getAttribute("data-label") || "Enlarged diagram");
+      overlay.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    }
+
+    function close() {
+      overlay.classList.remove("is-open");
+      document.body.style.overflow = "";
+      if (lastFocus) lastFocus.focus();
+      lastFocus = null;
+    }
+
+    triggers.forEach(function (t) {
+      t.addEventListener("click", function () { open(t); });
+    });
+  })();
+
   /* ---------- Cookie consent banner ---------- */
   (function () {
     var CONSENT_KEY = "bi-consent-v1";
