@@ -937,6 +937,23 @@ strong { color: var(--navy); }
   color: var(--ink-faint);
   margin-top: 0.5rem;
 }
+.case-brand-figure {
+  margin: 0 0 2.5rem;
+}
+.case-brand-figure img {
+  border: 1px solid var(--mist);
+  border-radius: var(--radius-m);
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  display: block;
+}
+.case-brand-figure figcaption {
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  margin-top: 0.5rem;
+  text-align: center;
+}
 
 .placeholder-note {
   display: flex;
