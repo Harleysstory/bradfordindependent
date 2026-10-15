@@ -478,106 +478,100 @@
   var startOverlay = document.getElementById("start");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Ambient soundtrack (Web Audio, synthesised — no files) ----------
-     A soft evolving pad that changes chord with each scene, plus a few
-     gentle bell accents timed to the framework pops and the final CTA. */
+  /* ---------- Low-key lofi bed (Web Audio, synthesised — no files) ----------
+     One warm drone, faint vinyl-style crackle, and a sparse soft note
+     every few seconds. No chord changes, no accents — just texture. */
   var Sound = {
-    ctx: null, master: null, filter: null, voices: [], muted: false,
-    CHORDS: [
-      [110.00, 164.81, 220.00],              /* 1 logo   — A open fifth  */
-      [110.00, 130.81, 164.81],              /* 2 hook   — A minor       */
-      [ 87.31, 174.61, 261.63, 329.63],      /* 3 pitch  — F maj7       */
-      [ 98.00, 123.47, 146.83, 196.00],      /* 4 frame  — G major      */
-      [ 87.31, 174.61, 261.63, 329.63],      /* 5 proof  — F maj7       */
-      [110.00, 164.81, 220.00, 277.18]       /* 6 CTA    — A major      */
-    ],
+    ctx: null, master: null, muted: false,
+    PENTA: [220.00, 261.63, 293.66, 329.63, 392.00],  /* A minor pentatonic */
     init: function () {
       if (this.ctx) return;
       var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) { this.enabled = false; return; }
+      if (!AC) return;
       this.ctx = new AC();
+      var t = this.ctx.currentTime;
       this.master = this.ctx.createGain();
       this.master.gain.value = 0;
-      var comp = this.ctx.createDynamicsCompressor();
-      this.filter = this.ctx.createBiquadFilter();
-      this.filter.type = "lowpass";
-      this.filter.frequency.value = 900;
-      this.filter.Q.value = 0.4;
-      this.filter.connect(this.master);
-      this.master.connect(comp);
-      comp.connect(this.ctx.destination);
-      /* slow filter drift so the pad breathes */
-      var lfo = this.ctx.createOscillator();
-      lfo.frequency.value = 0.07;
-      var lfoGain = this.ctx.createGain();
-      lfoGain.gain.value = 260;
-      lfo.connect(lfoGain);
-      lfoGain.connect(this.filter.frequency);
-      lfo.start();
-    },
-    setChord: function (i) {
-      if (!this.ctx || this.muted) return;
-      var t = this.ctx.currentTime;
-      var chord = this.CHORDS[i] || this.CHORDS[0];
-      var fade = 1.8;
-      this.voices.forEach(function (v) {
-        try {
-          v.g.gain.cancelScheduledValues(t);
-          v.g.gain.setValueAtTime(v.g.gain.value, t);
-          v.g.gain.exponentialRampToValueAtTime(0.0001, t + fade);
-          v.o.stop(t + fade + 0.1);
-        } catch (e) { /* already stopped */ }
-      });
-      this.voices = [];
+      var lp = this.ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 720;               /* everything warm and dark  */
+      lp.Q.value = 0.5;
+      lp.connect(this.master);
+      this.master.connect(this.ctx.destination);
+
+      /* warm drone — two barely detuned sines, slow fade in */
       var self = this;
-      chord.forEach(function (f, k) {
+      [110.00, 164.81].forEach(function (f, i) {
         var o = self.ctx.createOscillator();
-        o.type = (k % 2 === 0) ? "sine" : "triangle";
+        o.type = "sine";
         o.frequency.value = f;
-        o.detune.value = (k - 1.5) * 4;
+        o.detune.value = i ? 6 : -6;
         var g = self.ctx.createGain();
         g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.05, t + fade);
+        g.gain.linearRampToValueAtTime(i ? 0.03 : 0.045, t + 3);
         o.connect(g);
-        g.connect(self.filter);
-        o.start(t);
-        self.voices.push({ o: o, g: g });
+        g.connect(lp);
+        o.start();
       });
+
+      /* vinyl-ish crackle — sparse pops baked into a looping noise buffer */
+      var len = Math.floor(2 * this.ctx.sampleRate);
+      var buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+      var d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.006;
+      for (var n = 0; n < 26; n++) {
+        var p = Math.floor(Math.random() * len);
+        var amp = 0.05 + Math.random() * 0.12;
+        d[p] += (Math.random() * 2 - 1) * amp;
+        if (p + 1 < len) d[p + 1] += (Math.random() * 2 - 1) * amp * 0.5;
+      }
+      var noise = this.ctx.createBufferSource();
+      noise.buffer = buf;
+      noise.loop = true;
+      var nf = this.ctx.createBiquadFilter();
+      nf.type = "lowpass";
+      nf.frequency.value = 3200;
+      var ng = this.ctx.createGain();
+      ng.gain.value = 0.05;
+      noise.connect(nf);
+      nf.connect(ng);
+      ng.connect(lp);
+      noise.start();
+
+      /* sparse mellow notes */
+      this.schedulePluck(lp);
     },
-    bell: function (freq, delay, vol) {
-      if (!this.ctx || this.muted) return;
-      var t = this.ctx.currentTime + (delay || 0);
-      var o = this.ctx.createOscillator();
-      o.type = "sine";
-      o.frequency.value = freq;
-      var g = this.ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(vol || 0.05, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
-      o.connect(g);
-      g.connect(this.master);
-      o.start(t);
-      o.stop(t + 1.8);
+    schedulePluck: function (dest) {
+      var self = this;
+      var delay = 3500 + Math.random() * 4500;   /* a note every ~4–8 s */
+      this.pluckTimer = setTimeout(function () {
+        if (!self.ctx) return;
+        if (!self.muted) {
+          var t = self.ctx.currentTime;
+          var f = self.PENTA[Math.floor(Math.random() * self.PENTA.length)];
+          var o = self.ctx.createOscillator();
+          o.type = "sine";
+          o.frequency.value = f;
+          var g = self.ctx.createGain();
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.exponentialRampToValueAtTime(0.04, t + 0.03);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 2.2);
+          o.connect(g);
+          g.connect(dest);
+          o.start(t);
+          o.stop(t + 2.4);
+        }
+        self.schedulePluck(dest);
+      }, delay);
     },
     duck: function (up) {
       if (!this.ctx) return;
       var t = this.ctx.currentTime;
       this.master.gain.cancelScheduledValues(t);
       this.master.gain.setValueAtTime(this.master.gain.value, t);
-      this.master.gain.linearRampToValueAtTime(up ? 0.55 : 0, t + 1.2);
+      this.master.gain.linearRampToValueAtTime(up ? 0.3 : 0, t + 1.2);
     }
   };
-
-  function sceneAudio(i) {
-    Sound.setChord(i);
-    if (i === 0) Sound.bell(440.00, 0.9, 0.035);          /* logo ping   */
-    if (i === 3) {                                        /* framework   */
-      Sound.bell(587.33, 0.15, 0.05);                     /* U — D5      */
-      Sound.bell(783.99, 0.95, 0.05);                     /* I — G5      */
-      Sound.bell(987.77, 1.75, 0.055);                    /* B — B5      */
-    }
-    if (i === 5) Sound.bell(880.00, 0.6, 0.045);          /* CTA resolve */
-  }
 
   var current = -1, timer = null, paused = false, remaining = 0, tickStart = 0, totalDur = 0, elapsedBefore = 0;
 
@@ -610,7 +604,6 @@
   function playScene(i) {
     clearTimer();
     show(i);
-    if (started) sceneAudio(i);
     var dur = parseInt(scenes[i].getAttribute("data-dur"), 10);
     totalDur = dur; remaining = dur; elapsedBefore = 0; tickStart = Date.now();
     overlay.classList.remove("show");
