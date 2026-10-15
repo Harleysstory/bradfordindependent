@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bradford Independent — Trailer</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("assets/fonts/inter-var-latin.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Space Grotesk";
+    src: url("assets/fonts/space-grotesk-var-latin.woff2") format("woff2");
+    font-weight: 300 700;
+    font-display: swap;
+  }
+  :root {
+    --navy: #0B1F33;
+    --navy-2: #0e2942;
+    --blue: #164E78;
+    --blue-light: #7FB4D6;
+    --teal: #00A6A6;
+    --teal-bright: #17C2C2;
+    --amber: #F2B134;
+    --paper: #F5F7F8;
+    --mist: #DCE6EC;
+    --mist-on-dark: #9DB4C6;
+    --font-head: "Space Grotesk", "Segoe UI", Arial, sans-serif;
+    --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: #050d17;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-body);
+    overflow: hidden;
+  }
+
+  /* ---------- Stage (16:9 letterboxed) ---------- */
+  .stage {
+    position: relative;
+    width: min(100vw, calc(100vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: var(--navy);
+    overflow: hidden;
+    box-shadow: 0 30px 90px rgba(0,0,0,.7);
+  }
+
+  /* ---------- Ambient background ---------- */
+  .bg-grid, .bg-glow { position: absolute; inset: 0; pointer-events: none; }
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(127,180,214,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(127,180,214,.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridDrift 24s linear infinite;
+  }
+  @keyframes gridDrift { to { background-position: 48px 48px, 48px 48px; } }
+  .bg-glow {
+    background:
+      radial-gradient(46rem 26rem at 78% 14%, rgba(0,166,166,.13), transparent 62%),
+      radial-gradient(40rem 30rem at 8% 92%, rgba(22,78,120,.5), transparent 65%);
+  }
+
+  /* ---------- Scenes ---------- */
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6%;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+  }
+  .scene.active { opacity: 1; visibility: visible; z-index: 2; }
+
+  /* word/line reveal */
+  .scene .line {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .scene.active .line {
+    animation: rise .7s cubic-bezier(.22,.9,.3,1) forwards;
+  }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  .scene.leaving { animation: fadeOut .5s ease forwards; }
+  @keyframes fadeOut { to { opacity: 0; transform: translateY(-12px); } }
+
+  /* ---------- Typography ---------- */
+  .kicker {
+    font-family: var(--font-head);
+    font-size: clamp(.7rem, 1.4vw, .95rem);
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--teal-bright);
+    margin-bottom: 1.4em;
+  }
+  h1, h2 {
+    font-family: var(--font-head);
+    color: var(--paper);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+  h1 { font-size: clamp(1.7rem, 4.6vw, 3.6rem); }
+  h2 { font-size: clamp(1.5rem, 4vw, 3.1rem); }
+  .sub {
+    color: var(--mist-on-dark);
+    font-size: clamp(.95rem, 1.9vw, 1.25rem);
+    line-height: 1.6;
+    max-width: 34em;
+    margin-top: 1.2em;
+  }
+  .sub strong { color: var(--paper); font-weight: 600; }
+  .accent-teal { color: var(--teal-bright); }
+  .accent-amber { color: var(--amber); }
+
+  /* ---------- Scene 1: logo sting ---------- */
+  .logo-mark {
+    width: clamp(4rem, 9vw, 7rem);
+    height: auto;
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    transform: scale(.8);
+  }
+  .scene.active .logo-mark {
+    animation: logoIn .9s cubic-bezier(.22,.9,.3,1) .1s forwards;
+  }
+  @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
+  .wordmark {
+    font-family: var(--font-head);
+    font-size: clamp(1.6rem, 4.2vw, 3.2rem);
+    font-weight: 600;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+  .wordmark em { font-style: normal; color: var(--teal-bright); }
+
+  /* ---------- Scene 4: framework ---------- */
+  .framework {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 3.5rem);
+    margin-top: 2rem;
+  }
+  .fw-step { display: flex; flex-direction: column; align-items: center; gap: .9rem; }
+  .fw-node {
+    width: clamp(3rem, 6vw, 4.4rem);
+    height: clamp(3rem, 6vw, 4.4rem);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    opacity: 0;
+    transform: scale(.6);
+  }
+  .scene.active .fw-node { animation: pop .55s cubic-bezier(.22,1.2,.3,1) forwards; }
+  .scene.active .fw-step:nth-child(1) .fw-node { animation-delay: .15s; }
+  .scene.active .fw-step:nth-child(2) .fw-node { animation-delay: .95s; }
+  .scene.active .fw-step:nth-child(3) .fw-node { animation-delay: 1.75s; }
+  @keyframes pop { to { opacity: 1; transform: scale(1); } }
+  .fw-node--teal { border: 2px solid var(--teal); color: var(--teal-bright); box-shadow: 0 0 0 6px rgba(0,166,166,.12), 0 0 24px rgba(0,166,166,.3); }
+  .fw-node--amber { border: 2px solid var(--amber); color: var(--amber); box-shadow: 0 0 0 6px rgba(242,177,52,.12), 0 0 24px rgba(242,177,52,.25); }
+  .fw-node--blue { border: 2px solid var(--blue-light); color: var(--blue-light); box-shadow: 0 0 0 6px rgba(127,180,214,.12), 0 0 24px rgba(127,180,214,.25); }
+  .fw-label {
+    font-family: var(--font-head);
+    font-size: clamp(.7rem, 1.4vw, .95rem);
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+  .scene.active .fw-label { animation: rise .5s ease forwards; }
+  .scene.active .fw-step:nth-child(1) .fw-label { animation-delay: .5s; }
+  .scene.active .fw-step:nth-child(2) .fw-label { animation-delay: 1.3s; }
+  .scene.active .fw-step:nth-child(3) .fw-label { animation-delay: 2.1s; }
+  .fw-arrow {
+    color: var(--mist-on-dark);
+    font-size: clamp(1.2rem, 2.6vw, 2rem);
+    opacity: 0;
+  }
+  .scene.active .fw-arrow { animation: fadeIn .4s ease forwards; }
+  .scene.active .fw-arrow:nth-of-type(1) { animation-delay: .85s; }
+  .scene.active .fw-arrow:nth-of-type(2) { animation-delay: 1.65s; }
+  @keyframes fadeIn { to { opacity: .7; } }
+
+  /* ---------- Scene 5: proof ---------- */
+  .proof-items { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 1.6rem; }
+  .proof-item {
+    display: flex;
+    align-items: baseline;
+    gap: .8em;
+    color: var(--paper);
+    font-family: var(--font-head);
+    font-size: clamp(1rem, 2.2vw, 1.6rem);
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .scene.active .proof-item { animation: rise .6s ease forwards; }
+  .scene.active .proof-item:nth-child(1) { animation-delay: .3s; }
+  .scene.active .proof-item:nth-child(2) { animation-delay: .9s; }
+  .scene.active .proof-item:nth-child(3) { animation-delay: 1.5s; }
+  .proof-item::before {
+    content: "";
+    width: .5em; height: .5em;
+    border-radius: 50%;
+    background: var(--teal-bright);
+    box-shadow: 0 0 10px rgba(0,166,166,.8);
+    flex: none;
+    transform: translateY(-.05em);
+  }
+  .proof-item:nth-child(2)::before { background: var(--amber); box-shadow: 0 0 10px rgba(242,177,52,.7); }
+  .proof-item:nth-child(3)::before { background: var(--blue-light); box-shadow: 0 0 10px rgba(127,180,214,.7); }
+
+  /* ---------- Scene 6: CTA ---------- */
+  .cta-url {
+    font-family: var(--font-head);
+    font-size: clamp(1.1rem, 2.6vw, 2rem);
+    color: var(--teal-bright);
+    letter-spacing: .02em;
+    margin-top: 1.6em;
+    opacity: 0;
+  }
+  .scene.active .cta-url { animation: rise .6s ease .5s forwards; }
+  .cta-email {
+    color: var(--mist-on-dark);
+    font-size: clamp(.85rem, 1.6vw, 1.05rem);
+    margin-top: .9em;
+    opacity: 0;
+  }
+  .scene.active .cta-email { animation: rise .6s ease .9s forwards; }
+
+  /* ---------- Scene timing choreography ---------- */
+  .scene[data-scene="1"] .line { animation-delay: .35s; }
+  .scene[data-scene="2"] .line:nth-child(1) { animation-delay: .1s; }
+  .scene[data-scene="2"] .line:nth-child(2) { animation-delay: 1.4s; }
+  .scene[data-scene="3"] .line:nth-child(1) { animation-delay: .1s; }
+  .scene[data-scene="3"] .line:nth-child(2) { animation-delay: 1.1s; }
+  .scene[data-scene="6"] .line:nth-child(1) { animation-delay: .1s; }
+  .scene[data-scene="6"] .line:nth-child(2) { animation-delay: .9s; }
+
+  /* ---------- Progress bar ---------- */
+  .progress {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 4px;
+    background: rgba(245,247,248,.12);
+    z-index: 10;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    transition: width .2s linear;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    z-index: 10;
+    display: flex;
+    gap: .5rem;
+  }
+  .ctl {
+    font-family: var(--font-head);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--mist-on-dark);
+    background: rgba(11,31,51,.6);
+    border: 1px solid rgba(245,247,248,.2);
+    border-radius: 8px;
+    padding: .55em 1em;
+    cursor: pointer;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .ctl:hover { color: var(--paper); border-color: var(--teal); }
+
+  .replay-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    background: rgba(5,13,23,.82);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .replay-overlay.show { display: flex; }
+  .replay-overlay .wordmark { font-size: clamp(1.3rem, 3vw, 2.2rem); }
+  .replay-btn {
+    font-family: var(--font-head);
+    font-size: clamp(.85rem, 1.6vw, 1rem);
+    font-weight: 600;
+    color: var(--navy);
+    background: linear-gradient(135deg, var(--teal), var(--teal-bright));
+    border: none;
+    border-radius: 10px;
+    padding: .9em 2em;
+    cursor: pointer;
+  }
+  .replay-btn:hover { filter: brightness(1.1); }
+
+  .scene-links { position: absolute; bottom: 1.2rem; left: 1.2rem; z-index: 10; display: flex; gap: .4rem; }
+  .dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,247,248,.35);
+    background: transparent;
+    color: var(--mist-on-dark);
+    font-family: var(--font-head);
+    font-size: .68rem;
+    cursor: pointer;
+  }
+  .dot.on { background: var(--teal); border-color: var(--teal); color: var(--navy); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bg-grid, .scene .line, .scene .logo-mark, .scene .fw-node,
+    .scene .fw-label, .scene .fw-arrow, .scene .proof-item,
+    .scene .cta-url, .scene .cta-email { animation: none !important; }
+    .scene.active .line, .scene.active .logo-mark, .scene.active .fw-node,
+    .scene.active .fw-label, .scene.active .fw-arrow, .scene.active .proof-item,
+    .scene.active .cta-url, .scene.active .cta-email { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <!-- SCENE 1 — logo sting -->
+  <section class="scene" data-scene="1" data-dur="4200" aria-label="Bradford Independent">
+    <img class="logo-mark" src="assets/img/bi-logo.png" alt="" width="512" height="512">
+    <p class="line wordmark">Bradford <em>Independent</em></p>
+  </section>
+
+  <!-- SCENE 2 — hook -->
+  <section class="scene" data-scene="2" data-dur="5200" aria-label="The problem">
+    <h1 class="line">You don't have one big problem.</h1>
+    <h1 class="line accent-teal">You have several small ones that add&nbsp;up.</h1>
+  </section>
+
+  <!-- SCENE 3 — positioning -->
+  <section class="scene" data-scene="3" data-dur="5200" aria-label="Positioning">
+    <p class="kicker line">Bradford Independent</p>
+    <h2 class="line">Systems and operational improvement<br>for startups.</h2>
+    <p class="sub line">Seeing how your work <strong>actually</strong> operates — then turning that
+    understanding into processes, services and digital tools that hold up.</p>
+  </section>
+
+  <!-- SCENE 4 — framework -->
+  <section class="scene" data-scene="4" data-dur="6000" aria-label="Understand, improve, build">
+    <p class="kicker line">The approach</p>
+    <div class="framework">
+      <div class="fw-step">
+        <div class="fw-node fw-node--teal">U</div>
+        <span class="fw-label">Understand</span>
+      </div>
+      <span class="fw-arrow" aria-hidden="true">→</span>
+      <div class="fw-step">
+        <div class="fw-node fw-node--amber">I</div>
+        <span class="fw-label">Improve</span>
+      </div>
+      <span class="fw-arrow" aria-hidden="true">→</span>
+      <div class="fw-step">
+        <div class="fw-node fw-node--blue">B</div>
+        <span class="fw-label">Build</span>
+      </div>
+    </div>
+    <p class="sub line">Business analysis first. Everything else follows from it.</p>
+  </section>
+
+  <!-- SCENE 5 — proof -->
+  <section class="scene" data-scene="5" data-dur="5600" aria-label="Credibility">
+    <p class="kicker line">Why it works</p>
+    <div class="proof-items">
+      <p class="proof-item">Direct access — no layers between you and the analysis</p>
+      <p class="proof-item">Evidence before opinion, always</p>
+      <p class="proof-item">Recommendations you can actually adopt</p>
+    </div>
+  </section>
+
+  <!-- SCENE 6 — CTA -->
+  <section class="scene" data-scene="6" data-dur="6000" aria-label="Call to action">
+    <h2 class="line">Have a problem you're<br>trying to untangle?</h2>
+    <p class="line sub">You don't need the solution figured out first.</p>
+    <p class="cta-url">bradfordindependent.com</p>
+    <p class="cta-email">harley@bradfordindependent.com</p>
+  </section>
+
+  <div class="controls">
+    <button class="ctl" id="btn-toggle" type="button">Pause</button>
+    <button class="ctl" id="btn-restart" type="button">Restart</button>
+  </div>
+
+  <div class="scene-links" id="dots" aria-label="Jump to scene"></div>
+
+  <div class="progress"><div class="progress-bar" id="bar"></div></div>
+
+  <div class="replay-overlay" id="overlay">
+    <p class="wordmark">Bradford <em>Independent</em></p>
+    <button class="replay-btn" id="btn-replay" type="button">Watch again</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var scenes = Array.prototype.slice.call(document.querySelectorAll(".scene"));
+  var bar = document.getElementById("bar");
+  var overlay = document.getElementById("overlay");
+  var dotsWrap = document.getElementById("dots");
+  var btnToggle = document.getElementById("btn-toggle");
+  var btnRestart = document.getElementById("btn-restart");
+  var btnReplay = document.getElementById("btn-replay");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var current = -1, timer = null, paused = false, remaining = 0, tickStart = 0, totalDur = 0, elapsedBefore = 0;
+
+  // Build scene dots
+  scenes.forEach(function (s, i) {
+    var d = document.createElement("button");
+    d.className = "dot";
+    d.type = "button";
+    d.textContent = i + 1;
+    d.setAttribute("aria-label", "Go to scene " + (i + 1));
+    d.addEventListener("click", function () { goTo(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function clearTimer() { if (timer) { clearTimeout(timer); clearInterval(tick); timer = null; clearInterval(tick); } }
+  var tick = null;
+
+  function show(i) {
+    scenes.forEach(function (s, j) {
+      s.classList.remove("leaving");
+      if (j === i) { s.classList.add("active"); }
+      else if (s.classList.contains("active")) { s.classList.add("leaving"); s.classList.remove("active"); }
+      else { s.classList.remove("active"); }
+    });
+    dots.forEach(function (d, j) { d.classList.toggle("on", j === i); });
+    current = i;
+  }
+
+  function playScene(i) {
+    clearTimer();
+    show(i);
+    var dur = parseInt(scenes[i].getAttribute("data-dur"), 10);
+    totalDur = dur; remaining = dur; elapsedBefore = 0; tickStart = Date.now();
+    overlay.classList.remove("show");
+    if (reduced) {
+      // static: hold each scene briefly, no animated progress
+      bar.style.width = ((i + 1) / scenes.length * 100) + "%";
+      timer = setTimeout(function () { next(); }, 3500);
+      return;
+    }
+    tick = setInterval(function () {
+      if (paused) return;
+      var elapsed = elapsedBefore + (Date.now() - tickStart);
+      bar.style.width = Math.min(100, (globalElapsedBase + elapsed) / GRAND_TOTAL * 100) + "%";
+    }, 200);
+    timer = setTimeout(function () { next(); }, dur);
+  }
+
+  var globalElapsedBase = 0, GRAND_TOTAL = 0;
+  scenes.forEach(function (s) { GRAND_TOTAL += parseInt(s.getAttribute("data-dur"), 10); });
+
+  function next() {
+    globalElapsedBase += parseInt(scenes[current].getAttribute("data-dur"), 10);
+    if (current + 1 < scenes.length) { playScene(current + 1); }
+    else { end(); }
+  }
+
+  function goTo(i) {
+    // recompute global base for the target scene
+    globalElapsedBase = 0;
+    for (var k = 0; k < i; k++) globalElapsedBase += parseInt(scenes[k].getAttribute("data-dur"), 10);
+    paused = false; btnToggle.textContent = "Pause";
+    playScene(i);
+  }
+
+  function end() {
+    clearTimer();
+    bar.style.width = "100%";
+    overlay.classList.add("show");
+  }
+
+  function restart() {
+    globalElapsedBase = 0; paused = false; btnToggle.textContent = "Pause";
+    playScene(0);
+  }
+
+  btnRestart.addEventListener("click", restart);
+  btnReplay.addEventListener("click", restart);
+
+  btnToggle.addEventListener("click", function () {
+    if (current < 0) return;
+    if (!paused) {
+      paused = true;
+      elapsedBefore += Date.now() - tickStart;
+      btnToggle.textContent = "Play";
+    } else {
+      paused = false;
+      tickStart = Date.now();
+      btnToggle.textContent = "Pause";
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === " ") { e.preventDefault(); btnToggle.click(); }
+    if (e.key === "r" || e.key === "R") restart();
+  });
+
+  restart();
+})();
+</script>
+</body>
+</html>
