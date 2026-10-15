@@ -181,6 +181,7 @@
     font-weight: 600;
     letter-spacing: .18em;
     text-transform: uppercase;
+    color: var(--paper);
     opacity: 0;
   }
   .scene.active .fw-label { animation: rise .5s ease forwards; }
@@ -321,6 +322,35 @@
   }
   .replay-btn:hover { filter: brightness(1.1); }
 
+  .start-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 12;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    background: rgba(5, 13, 23, .9);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .start-overlay.hidden { display: none; }
+  .start-logo { width: clamp(3rem, 6vw, 4.5rem); height: auto; }
+  .start-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+    color: var(--paper);
+  }
+  .start-title em { font-style: normal; color: var(--teal-bright); }
+  .start-note {
+    font-family: var(--font-head);
+    color: var(--mist-on-dark);
+    font-size: .75rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
   .scene-links { position: absolute; bottom: 1.2rem; left: 1.2rem; z-index: 10; display: flex; gap: .4rem; }
   .dot {
     width: 22px; height: 22px;
@@ -411,6 +441,7 @@
   </section>
 
   <div class="controls">
+    <button class="ctl" id="btn-sound" type="button">Sound on</button>
     <button class="ctl" id="btn-toggle" type="button">Pause</button>
     <button class="ctl" id="btn-restart" type="button">Restart</button>
   </div>
@@ -422,6 +453,13 @@
   <div class="replay-overlay" id="overlay">
     <p class="wordmark">Bradford <em>Independent</em></p>
     <button class="replay-btn" id="btn-replay" type="button">Watch again</button>
+  </div>
+
+  <div class="start-overlay" id="start">
+    <img class="start-logo" src="assets/img/bi-logo.png" alt="" width="512" height="512">
+    <p class="start-title">Bradford <em>Independent</em></p>
+    <button class="replay-btn" id="btn-start" type="button">Play trailer</button>
+    <p class="start-note">with sound &middot; 30 sec</p>
   </div>
 </div>
 
@@ -435,7 +473,111 @@
   var btnToggle = document.getElementById("btn-toggle");
   var btnRestart = document.getElementById("btn-restart");
   var btnReplay = document.getElementById("btn-replay");
+  var btnStart = document.getElementById("btn-start");
+  var btnSound = document.getElementById("btn-sound");
+  var startOverlay = document.getElementById("start");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Ambient soundtrack (Web Audio, synthesised — no files) ----------
+     A soft evolving pad that changes chord with each scene, plus a few
+     gentle bell accents timed to the framework pops and the final CTA. */
+  var Sound = {
+    ctx: null, master: null, filter: null, voices: [], muted: false,
+    CHORDS: [
+      [110.00, 164.81, 220.00],              /* 1 logo   — A open fifth  */
+      [110.00, 130.81, 164.81],              /* 2 hook   — A minor       */
+      [ 87.31, 174.61, 261.63, 329.63],      /* 3 pitch  — F maj7       */
+      [ 98.00, 123.47, 146.83, 196.00],      /* 4 frame  — G major      */
+      [ 87.31, 174.61, 261.63, 329.63],      /* 5 proof  — F maj7       */
+      [110.00, 164.81, 220.00, 277.18]       /* 6 CTA    — A major      */
+    ],
+    init: function () {
+      if (this.ctx) return;
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { this.enabled = false; return; }
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0;
+      var comp = this.ctx.createDynamicsCompressor();
+      this.filter = this.ctx.createBiquadFilter();
+      this.filter.type = "lowpass";
+      this.filter.frequency.value = 900;
+      this.filter.Q.value = 0.4;
+      this.filter.connect(this.master);
+      this.master.connect(comp);
+      comp.connect(this.ctx.destination);
+      /* slow filter drift so the pad breathes */
+      var lfo = this.ctx.createOscillator();
+      lfo.frequency.value = 0.07;
+      var lfoGain = this.ctx.createGain();
+      lfoGain.gain.value = 260;
+      lfo.connect(lfoGain);
+      lfoGain.connect(this.filter.frequency);
+      lfo.start();
+    },
+    setChord: function (i) {
+      if (!this.ctx || this.muted) return;
+      var t = this.ctx.currentTime;
+      var chord = this.CHORDS[i] || this.CHORDS[0];
+      var fade = 1.8;
+      this.voices.forEach(function (v) {
+        try {
+          v.g.gain.cancelScheduledValues(t);
+          v.g.gain.setValueAtTime(v.g.gain.value, t);
+          v.g.gain.exponentialRampToValueAtTime(0.0001, t + fade);
+          v.o.stop(t + fade + 0.1);
+        } catch (e) { /* already stopped */ }
+      });
+      this.voices = [];
+      var self = this;
+      chord.forEach(function (f, k) {
+        var o = self.ctx.createOscillator();
+        o.type = (k % 2 === 0) ? "sine" : "triangle";
+        o.frequency.value = f;
+        o.detune.value = (k - 1.5) * 4;
+        var g = self.ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.05, t + fade);
+        o.connect(g);
+        g.connect(self.filter);
+        o.start(t);
+        self.voices.push({ o: o, g: g });
+      });
+    },
+    bell: function (freq, delay, vol) {
+      if (!this.ctx || this.muted) return;
+      var t = this.ctx.currentTime + (delay || 0);
+      var o = this.ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.value = freq;
+      var g = this.ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol || 0.05, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+      o.connect(g);
+      g.connect(this.master);
+      o.start(t);
+      o.stop(t + 1.8);
+    },
+    duck: function (up) {
+      if (!this.ctx) return;
+      var t = this.ctx.currentTime;
+      this.master.gain.cancelScheduledValues(t);
+      this.master.gain.setValueAtTime(this.master.gain.value, t);
+      this.master.gain.linearRampToValueAtTime(up ? 0.55 : 0, t + 1.2);
+    }
+  };
+
+  function sceneAudio(i) {
+    Sound.setChord(i);
+    if (i === 0) Sound.bell(440.00, 0.9, 0.035);          /* logo ping   */
+    if (i === 3) {                                        /* framework   */
+      Sound.bell(587.33, 0.15, 0.05);                     /* U — D5      */
+      Sound.bell(783.99, 0.95, 0.05);                     /* I — G5      */
+      Sound.bell(987.77, 1.75, 0.055);                    /* B — B5      */
+    }
+    if (i === 5) Sound.bell(880.00, 0.6, 0.045);          /* CTA resolve */
+  }
 
   var current = -1, timer = null, paused = false, remaining = 0, tickStart = 0, totalDur = 0, elapsedBefore = 0;
 
@@ -468,6 +610,7 @@
   function playScene(i) {
     clearTimer();
     show(i);
+    if (started) sceneAudio(i);
     var dur = parseInt(scenes[i].getAttribute("data-dur"), 10);
     totalDur = dur; remaining = dur; elapsedBefore = 0; tickStart = Date.now();
     overlay.classList.remove("show");
@@ -506,10 +649,12 @@
     clearTimer();
     bar.style.width = "100%";
     overlay.classList.add("show");
+    if (started) Sound.duck(false);
   }
 
   function restart() {
     globalElapsedBase = 0; paused = false; btnToggle.textContent = "Pause";
+    if (started) Sound.duck(!Sound.muted);
     playScene(0);
   }
 
@@ -522,19 +667,40 @@
       paused = true;
       elapsedBefore += Date.now() - tickStart;
       btnToggle.textContent = "Play";
+      if (Sound.ctx && Sound.ctx.state === "running") Sound.ctx.suspend();
     } else {
       paused = false;
       tickStart = Date.now();
       btnToggle.textContent = "Pause";
+      if (Sound.ctx && Sound.ctx.state === "suspended") Sound.ctx.resume();
     }
   });
 
-  document.addEventListener("keydown", function (e) {
-    if (e.key === " ") { e.preventDefault(); btnToggle.click(); }
-    if (e.key === "r" || e.key === "R") restart();
+  btnSound.addEventListener("click", function () {
+    if (!Sound.ctx) return;
+    Sound.muted = !Sound.muted;
+    btnSound.textContent = Sound.muted ? "Muted" : "Sound on";
+    Sound.duck(!Sound.muted && !paused);
   });
 
-  restart();
+  var started = false;
+  function begin() {
+    if (started) return;
+    started = true;
+    Sound.init();
+    if (Sound.ctx && Sound.ctx.state === "suspended") Sound.ctx.resume();
+    startOverlay.classList.add("hidden");
+    restart();
+  }
+  btnStart.addEventListener("click", begin);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === " ") {
+      e.preventDefault();
+      if (!started) begin(); else btnToggle.click();
+    }
+    if (e.key === "r" || e.key === "R") { if (started) restart(); }
+  });
 })();
 </script>
 </body>
