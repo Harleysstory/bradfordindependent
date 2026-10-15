@@ -97,11 +97,16 @@
           </div>
 
           <div class="reveal">
-            <form id="contact-form" class="form-grid" novalidate>
-              <!-- honeypot: hidden from humans, tempting to bots -->
+            <form id="contact-form" class="form-grid" novalidate
+              action="https://formsubmit.co/harley@bradfordindependent.com" method="POST">
+              <input type="hidden" name="_subject" value="New enquiry from bradfordindependent.com">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_next" value="https://bradfordindependent.com/contact/?sent=1">
+              <!-- honeypot: hidden from humans, tempting to bots; FormSubmit discards filled submissions -->
               <div class="field-honeypot" aria-hidden="true">
                 <label for="cf-website">Company website</label>
-                <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                <input id="cf-website" name="_honey" type="text" tabindex="-1" autocomplete="off">
               </div>
 
               <div class="form-row">
@@ -131,13 +136,14 @@
               </div>
 
               <p class="form-note" id="form-sent" hidden>
-                Your email client should now open with the message ready to send.
-                If it didn't, email <a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a> directly.
+                Thanks — your message has been sent. I'll get back to you within a day. If you'd
+                rather email directly, write to <a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a>.
               </p>
               <p class="form-note">
-                This form opens your own email app with the message prepared — nothing is
-                stored on this website, and your details go only to Harley. A hidden spam
-                check helps keep junk out of my inbox.
+                This form is processed by <a href="https://formsubmit.co" rel="noopener">FormSubmit</a>
+                and forwarded securely to Harley's inbox. Nothing is stored on this website.
+                A hidden spam check helps keep junk out. See the
+                <a href="/privacy-policy/">Privacy Policy</a>.
               </p>
             </form>
           </div>

@@ -93,47 +93,31 @@
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  /* ---------- Contact form: compose a mailto draft ----------
-     No backend required; opens the visitor's own email client with
-     the message pre-filled. Works without JS via a plain mailto link. */
+  /* ---------- Contact form: FormSubmit endpoint ----------
+     The form POSTs to FormSubmit (formsubmit.co), which relays the
+     submission to Harley's inbox. Spam protection: honeypot + timing guard. */
   var form = document.getElementById("contact-form");
 
   if (form) {
     var formOpenedAt = Date.now();
 
     form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
       /* Spam protection: honeypot field + minimum time-on-form.
          The honeypot is hidden from humans; bots tend to fill every field.
-         Real people almost never submit a written enquiry in under a second. */
-      var honey = form.elements.website ? form.elements.website.value : "";
-      if (honey) { return; } /* likely a bot — drop silently */
-      if (Date.now() - formOpenedAt < 1000) { return; } /* too fast to be human */
-
-      var name = form.elements.name.value.trim();
-      var email = form.elements.email.value.trim();
-      var org = form.elements.organisation.value.trim();
-      var message = form.elements.message.value.trim();
-
-      var subject = "Enquiry from bradfordindependent.com" +
-        (name ? " — " + name : "");
-
-      var body =
-        "Name: " + name + "\n" +
-        "Email: " + email + "\n" +
-        (org ? "Organisation: " + org + "\n" : "") +
-        "\n" +
-        message + "\n";
-
-      window.location.href =
-        "mailto:harley@bradfordindependent.com" +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
-
-      var sent = document.getElementById("form-sent");
-      if (sent) sent.hidden = false;
+         Real people almost never submit a written enquiry in under a second.
+         If either fails, block submission silently; otherwise allow the
+         form to POST to the endpoint. */
+      var honey = form.elements._honey ? form.elements._honey.value : "";
+      if (honey) { e.preventDefault(); return; } /* likely a bot */
+      if (Date.now() - formOpenedAt < 1000) { e.preventDefault(); return; } /* too fast */
     });
+
+    /* Success state after the FormSubmit redirect back to ?sent=1 */
+    if (/[?&]sent=1(=|$)/.test(window.location.search)) {
+      var ok = document.getElementById("form-sent");
+      if (ok) { ok.hidden = false; ok.scrollIntoView({ block: "center" }); }
+      if (form) form.style.display = "none";
+    }
   }
 
   /* ---------- Cookie consent banner ---------- */

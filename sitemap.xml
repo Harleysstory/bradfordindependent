@@ -21,6 +21,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://bradfordindependent.com/work/subtyped-me/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bradfordindependent.com/work/liberu-software/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://bradfordindependent.com/work/great-yarmouth-arts-festival/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
@@ -28,12 +38,17 @@
   <url>
     <loc>https://bradfordindependent.com/work/the-deprivation-of-business-in-great-yarmouth/</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://bradfordindependent.com/about/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bradfordindependent.com/contact/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bradfordindependent.com/privacy-policy/</loc>
@@ -44,10 +59,5 @@
     <loc>https://bradfordindependent.com/terms-and-conditions/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://bradfordindependent.com/contact/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
   </url>
 </urlset>
