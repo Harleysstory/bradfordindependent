@@ -120,6 +120,77 @@
     }
   }
 
+  /* ---------- Homepage pitch (silent trailer) ---------- */
+  (function () {
+    var pitch = document.querySelector(".pitch");
+    if (!pitch) return;
+    var scenes = Array.prototype.slice.call(pitch.querySelectorAll(".pitch-scene"));
+    if (!scenes.length) return;
+    var bar = pitch.querySelector(".pitch-bar");
+    var replay = pitch.querySelector(".p-replay");
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var durs = scenes.map(function (s) { return parseInt(s.getAttribute("data-dur"), 10) || 4000; });
+    var total = durs.reduce(function (a, b) { return a + b; }, 0);
+    var idx = -1, timer = null, started = false, ended = false, sceneStart = 0;
+
+    function show(i) {
+      scenes.forEach(function (s, j) {
+        if (j === i) { s.classList.add("is-active"); s.classList.remove("is-leaving"); }
+        else if (s.classList.contains("is-active")) { s.classList.remove("is-active"); s.classList.add("is-leaving"); }
+      });
+      idx = i;
+      sceneStart = Date.now();
+    }
+    function setBar() {
+      if (!bar) return;
+      var pre = 0, k;
+      for (k = 0; k < idx; k++) pre += durs[k];
+      var f = Math.min(durs[idx], Date.now() - sceneStart);
+      bar.style.width = Math.min(100, (pre + f) / total * 100) + "%";
+    }
+    function play(i) { clearTimeout(timer); show(i); timer = setTimeout(next, durs[i]); }
+    function next() { if (idx + 1 < scenes.length) play(idx + 1); else finish(); }
+    function finish() { ended = true; clearTimeout(timer); timer = null; if (bar) bar.style.width = "100%"; }
+
+    if (bar) {
+      setInterval(function () {
+        if (started && !ended && timer && !document.hidden) setBar();
+      }, 250);
+    }
+    if (replay) {
+      replay.addEventListener("click", function () { ended = false; play(0); });
+    }
+
+    if (reduced) {
+      /* no animation: hold the final scene statically with everything visible */
+      scenes[scenes.length - 1].classList.add("is-active");
+      if (bar) bar.style.width = "100%";
+      return;
+    }
+
+    /* start only when the section is actually on screen */
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && !started) { started = true; io.disconnect(); play(0); }
+        });
+      }, { threshold: 0.35 });
+      io.observe(pitch);
+    } else {
+      started = true;
+      play(0);
+    }
+
+    /* don't advance scenes in a background tab */
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        if (timer) { clearTimeout(timer); timer = null; }
+      } else if (started && !ended && !timer) {
+        play(idx < 0 ? 0 : idx);
+      }
+    });
+  })();
+
   /* ---------- Cookie consent banner ---------- */
   (function () {
     var CONSENT_KEY = "bi-consent-v1";

@@ -1311,6 +1311,160 @@ strong { color: var(--navy); }
 
 .form-note { font-size: 0.85rem; color: var(--ink-faint); }
 
+/* ---------- Homepage pitch (silent animated trailer) ---------- */
+.pitch {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  color: var(--paper-on-dark);
+}
+.pitch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(127, 180, 214, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127, 180, 214, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: grid-pan 90s linear infinite;
+  pointer-events: none;
+}
+.pitch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(36rem 22rem at 78% 10%, rgba(0, 166, 166, 0.14), transparent 62%),
+    radial-gradient(30rem 22rem at 8% 94%, rgba(22, 78, 120, 0.5), transparent 65%);
+  pointer-events: none;
+}
+.pitch-stage { position: relative; z-index: 1; min-height: clamp(19rem, 42vw, 27rem); }
+.pitch-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem);
+}
+/* scene switching is JS-gated: without JS every scene simply stacks and reads */
+.js .pitch-scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+.js .pitch-scene.is-active { opacity: 1; visibility: visible; }
+.js .pitch-scene.is-leaving { opacity: 0; visibility: hidden; transition: opacity 0.5s ease; }
+
+.pitch h2, .p-word {
+  font-family: var(--font-head);
+  color: var(--white);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.p-word { font-size: clamp(1.5rem, 3.8vw, 2.6rem); font-weight: 600; }
+.p-word em { font-style: normal; color: var(--teal-bright); }
+.pitch h2 { font-size: clamp(1.45rem, 3.4vw, 2.4rem); }
+.p-accent-teal { color: var(--teal-bright); }
+.p-kicker {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  margin-bottom: 1.1em;
+}
+.p-sub {
+  color: var(--mist-on-dark);
+  font-size: clamp(0.98rem, 1.8vw, 1.15rem);
+  line-height: 1.6;
+  max-width: 36em;
+  margin-top: 1em;
+}
+.p-sub strong { color: var(--paper-on-dark); }
+.p-logo { width: clamp(3.2rem, 6vw, 4.6rem); height: auto; margin-bottom: 1.2rem; }
+
+.p-line { opacity: 0; transform: translateY(16px); }
+.js .pitch-scene.is-active .p-line {
+  animation: pitch-rise 0.65s cubic-bezier(0.22, 0.9, 0.3, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes pitch-rise { to { opacity: 1; transform: none; } }
+
+.p-frame { display: flex; align-items: center; gap: clamp(0.9rem, 3.5vw, 2.8rem); margin-block: 0.6em 0.2em; }
+.p-step { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
+.p-node {
+  width: clamp(2.6rem, 5vw, 3.6rem);
+  height: clamp(2.6rem, 5vw, 3.6rem);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.8vw, 1.3rem);
+  background: var(--navy);
+  opacity: 0;
+  transform: scale(0.6);
+}
+.js .pitch-scene.is-active .p-node {
+  animation: pitch-pop 0.55s cubic-bezier(0.22, 1.2, 0.3, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes pitch-pop { to { opacity: 1; transform: scale(1); } }
+.p-node--teal { border: 2px solid var(--teal); color: var(--teal-bright); box-shadow: 0 0 0 6px rgba(0, 166, 166, 0.12), 0 0 22px rgba(0, 166, 166, 0.28); }
+.p-node--amber { border: 2px solid var(--amber); color: var(--amber); box-shadow: 0 0 0 6px rgba(242, 177, 52, 0.12), 0 0 22px rgba(242, 177, 52, 0.22); }
+.p-node--blue { border: 2px solid var(--blue-light); color: var(--blue-light); box-shadow: 0 0 0 6px rgba(127, 180, 214, 0.12), 0 0 22px rgba(127, 180, 214, 0.22); }
+.p-label {
+  font-family: var(--font-head);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.p-arrow { color: var(--mist-on-dark); opacity: 0; }
+.js .pitch-scene.is-active .p-arrow { animation: pitch-fade 0.4s ease forwards; animation-delay: var(--d, 0s); }
+@keyframes pitch-fade { to { opacity: 0.7; } }
+
+.p-items { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.4em; }
+.p-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7em;
+  font-family: var(--font-head);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 500;
+  color: var(--paper-on-dark);
+  opacity: 0;
+  transform: translateY(12px);
+}
+.js .pitch-scene.is-active .p-item {
+  animation: pitch-rise 0.6s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+.p-item::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--teal-bright);
+  box-shadow: 0 0 10px rgba(0, 166, 166, 0.8);
+  flex: none;
+  transform: translateY(-0.05em);
+}
+.p-item:nth-child(2)::before { background: var(--amber); box-shadow: 0 0 10px rgba(242, 177, 52, 0.7); }
+.p-item:nth-child(3)::before { background: var(--blue-light); box-shadow: 0 0 10px rgba(127, 180, 214, 0.7); }
+
+.pitch-actions { position: relative; z-index: 2; border-top: 1px solid rgba(245, 247, 248, 0.1); }
+.pitch-actions-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-block: 0.9rem;
+}
+.pitch-actions .btn { min-height: 44px; }
+.pitch-bar-wrap { height: 3px; background: rgba(245, 247, 248, 0.08); }
+.pitch-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--teal), var(--amber)); }
+
 /* ---------- Footer ---------- */
 .site-footer {
   position: relative;
@@ -1401,6 +1555,13 @@ strong { color: var(--navy); }
   .cta-band::before { animation: none; }
   .cookie-banner { transition: none; }
   .js .reveal { opacity: 1; transform: none; }
+  .pitch::before { animation: none; }
+  .pitch .p-line, .pitch .p-node,
+  .pitch .p-arrow, .pitch .p-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ---------- Footer legal links ---------- */
