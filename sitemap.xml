@@ -36,6 +36,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://bradfordindependent.com/privacy-policy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bradfordindependent.com/terms-and-conditions/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://bradfordindependent.com/contact/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>

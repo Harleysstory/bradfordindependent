@@ -99,8 +99,17 @@
   var form = document.getElementById("contact-form");
 
   if (form) {
+    var formOpenedAt = Date.now();
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+
+      /* Spam protection: honeypot field + minimum time-on-form.
+         The honeypot is hidden from humans; bots tend to fill every field.
+         Real people almost never submit a written enquiry in under a second. */
+      var honey = form.elements.website ? form.elements.website.value : "";
+      if (honey) { return; } /* likely a bot — drop silently */
+      if (Date.now() - formOpenedAt < 1000) { return; } /* too fast to be human */
 
       var name = form.elements.name.value.trim();
       var email = form.elements.email.value.trim();
@@ -126,4 +135,65 @@
       if (sent) sent.hidden = false;
     });
   }
+
+  /* ---------- Cookie consent banner ---------- */
+  (function () {
+    var CONSENT_KEY = "bi-consent-v1";
+
+    function readConsent() {
+      try { return localStorage.getItem(CONSENT_KEY); }
+      catch (e) { return null; }
+    }
+    function writeConsent(value) {
+      try { localStorage.setItem(CONSENT_KEY, value); }
+      catch (e) { /* storage unavailable — banner simply won't persist */ }
+    }
+
+    function buildBanner() {
+      var banner = document.createElement("div");
+      banner.className = "cookie-banner";
+      banner.setAttribute("role", "dialog");
+      banner.setAttribute("aria-label", "Cookie consent");
+      banner.innerHTML =
+        '<p>This site doesn\'t use tracking cookies. We only remember that you\'ve seen this notice. See our <a href="/privacy-policy/">Privacy Policy</a>.</p>' +
+        '<div class="cookie-banner-actions">' +
+        '<button class="btn btn--ghost-light btn--small" type="button" data-consent="reject">Reject</button>' +
+        '<button class="btn btn--primary btn--small" type="button" data-consent="accept">Accept</button>' +
+        '</div>';
+      return banner;
+    }
+
+    function dismiss(banner) {
+      banner.classList.add("is-hidden");
+      window.setTimeout(function () { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 320);
+    }
+
+    window.biCookiePreferences = function () {
+      try { localStorage.removeItem(CONSENT_KEY); } catch (e) { /* ignore */ }
+      var existing = document.querySelector(".cookie-banner");
+      if (existing) { return; }
+      var banner = buildBanner();
+      document.body.appendChild(banner);
+      wireActions(banner);
+      requestAnimationFrame(function () { banner.classList.remove("is-hidden"); });
+    };
+
+    function wireActions(banner) {
+      banner.addEventListener("click", function (e) {
+        var btn = e.target.closest("button[data-consent]");
+        if (!btn) { return; }
+        writeConsent(btn.getAttribute("data-consent"));
+        dismiss(banner);
+      });
+    }
+
+    if (!readConsent() && document.body) {
+      var banner = buildBanner();
+      banner.classList.add("is-hidden");
+      document.body.appendChild(banner);
+      wireActions(banner);
+      /* reveal after a beat so it doesn't fight the initial paint */
+      window.setTimeout(function () { banner.classList.remove("is-hidden"); }, 600);
+    }
+  })();
 })();

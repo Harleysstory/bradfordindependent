@@ -19,7 +19,10 @@
   <meta property="og:description" content="Have a problem you're trying to untangle? Start a conversation with Harley Bradford.">
   <meta property="og:url" content="https://bradfordindependent.com/contact/">
   <meta property="og:image" content="https://bradfordindependent.com/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bradfordindependent.com/assets/img/og-image.png">
 
   <link rel="preload" href="../assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -95,6 +98,12 @@
 
           <div class="reveal">
             <form id="contact-form" class="form-grid" novalidate>
+              <!-- honeypot: hidden from humans, tempting to bots -->
+              <div class="field-honeypot" aria-hidden="true">
+                <label for="cf-website">Company website</label>
+                <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
               <div class="form-row">
                 <div class="field">
                   <label for="cf-name">Name</label>
@@ -127,7 +136,8 @@
               </p>
               <p class="form-note">
                 This form opens your own email app with the message prepared — nothing is
-                stored on this website, and your details go only to Harley.
+                stored on this website, and your details go only to Harley. A hidden spam
+                check helps keep junk out of my inbox.
               </p>
             </form>
           </div>
@@ -175,6 +185,13 @@
         <p>© 2026 Bradford Independent · Harley Bradford</p>
         <p>Independent business analyst &amp; consultant · Great Yarmouth, Norfolk</p>
       </div>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="/terms-and-conditions/">Terms &amp; Conditions</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="#" onclick="window.biCookiePreferences &amp;&amp; window.biCookiePreferences(); return false;">Cookie preferences</a>
+      </nav>
     </div>
   </footer>
 

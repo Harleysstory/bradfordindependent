@@ -1381,5 +1381,80 @@ strong { color: var(--navy); }
   .page-hero::before,
   .framework::before,
   .cta-band::before { animation: none; }
+  .cookie-banner { transition: none; }
   .js .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Footer legal links ---------- */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.7rem;
+  padding-top: 1.2rem;
+  font-size: 0.85rem;
+}
+.footer-legal a {
+  color: var(--mist-on-dark);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.footer-legal a:hover { color: var(--teal-bright); }
+.footer-legal span { color: var(--mist-on-dark); opacity: 0.6; }
+
+/* ---------- Contact form: honeypot (spam trap) ---------- */
+.field-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* ---------- Cookie consent banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 200;
+  max-width: var(--container);
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.25rem;
+  padding: 1rem 1.25rem;
+  color: var(--paper-on-dark);
+  background: rgba(11, 31, 51, 0.92);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(245, 247, 248, 0.16);
+  border-radius: var(--radius-m);
+  box-shadow: 0 20px 50px -22px rgba(0, 0, 0, 0.6);
+  transform: translateY(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.cookie-banner.is-hidden {
+  opacity: 0;
+  transform: translateY(110%);
+  pointer-events: none;
+}
+.cookie-banner p {
+  margin: 0;
+  flex: 1 1 30ch;
+  font-size: 0.9rem;
+  color: var(--mist-on-dark);
+}
+.cookie-banner p a { color: var(--teal-bright); }
+.cookie-banner p a:hover { color: var(--white); }
+.cookie-banner-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+@media (max-width: 38rem) {
+  .cookie-banner { flex-direction: column; align-items: stretch; }
+  .cookie-banner p { flex: none; }
+  .cookie-banner-actions { justify-content: flex-end; }
 }
