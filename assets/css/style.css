@@ -73,6 +73,8 @@ body {
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--ink);
+  overflow-wrap: break-word;
+  word-break: break-word;
   background:
     radial-gradient(70rem 34rem at 110% -6rem, rgba(22, 78, 120, 0.05), transparent 62%),
     var(--paper);
@@ -99,7 +101,7 @@ h4 { font-size: 1.05rem; letter-spacing: 0; }
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
 
-a { color: var(--blue); text-underline-offset: 0.2em; }
+a { color: var(--blue); text-underline-offset: 0.2em; touch-action: manipulation; }
 a:hover { color: var(--teal); }
 
 ul, ol { margin: 0 0 1em; padding-left: 1.2em; }
@@ -217,6 +219,7 @@ strong { color: var(--navy); }
     border-color 0.18s ease;
 }
 .btn:active { transform: translateY(1px); }
+.btn { touch-action: manipulation; }
 
 .btn--primary {
   background: linear-gradient(135deg, var(--teal) 0%, var(--teal-bright) 100%);
@@ -265,6 +268,7 @@ strong { color: var(--navy); }
 .text-link::after { content: "→"; transition: transform 0.15s ease; }
 .text-link:hover::after { transform: translateX(4px); }
 .text-link:hover { color: var(--teal); }
+.text-link { touch-action: manipulation; }
 
 /* ---------- Header (glass) ---------- */
 .site-header {
@@ -339,8 +343,9 @@ strong { color: var(--navy); }
   background: none;
   border: 1px solid var(--mist);
   border-radius: var(--radius-s);
-  padding: 0.55rem 0.7rem;
+  padding: 0.7rem 0.85rem;
   cursor: pointer;
+  min-height: 44px;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 .nav-toggle:hover { border-color: var(--teal); }
@@ -490,7 +495,7 @@ strong { color: var(--navy); }
 
 /* ---------- Hero ---------- */
 .hero {
-  padding-block: clamp(4.5rem, 10vw, 8.5rem);
+  padding-block: clamp(3.5rem, 10vw, 8.5rem);
   /* brand hero artwork + readability overlay for the text column */
   background:
     linear-gradient(100deg,
@@ -528,6 +533,10 @@ strong { color: var(--navy); }
 .hero-sub strong { color: var(--paper-on-dark); font-weight: 600; }
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+@media (max-width: 30rem) {
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+}
 
 .hero-meta {
   display: flex;
@@ -568,7 +577,7 @@ strong { color: var(--navy); }
 /* ---------- Problem / situation list ---------- */
 .situation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   gap: 1px;
   background: var(--mist);
   border: 1px solid var(--mist);
@@ -793,7 +802,7 @@ strong { color: var(--navy); }
 /* ---------- Cards ---------- */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
   gap: 1.5rem;
 }
 /* staggered reveals inside grids */
@@ -849,6 +858,9 @@ strong { color: var(--navy); }
 }
 .work-card:hover .work-card-media img { transform: scale(1.045); }
 .work-card-media--graphic img { object-fit: contain; padding: 2.2rem; }
+@media (max-width: 30rem) {
+  .work-card-media--graphic img { padding: 1.2rem; }
+}
 .work-card-body {
   display: flex;
   flex-direction: column;
@@ -918,7 +930,7 @@ strong { color: var(--navy); }
 
 .case-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
   gap: 1.25rem;
 }
 .case-gallery figure { margin: 0; }
@@ -1127,6 +1139,9 @@ strong { color: var(--navy); }
   z-index: -1;
   opacity: 0.5;
 }
+@media (max-width: 30rem) {
+  .about-portrait::after { right: 0; }
+}
 
 .identity-note {
   margin-top: 2rem;
@@ -1322,6 +1337,7 @@ strong { color: var(--navy); }
   color: var(--paper-on-dark);
   text-decoration: none;
   font-size: 0.95rem;
+  padding-block: 0.35rem;
   transition: color 0.15s ease;
 }
 .footer-links a:hover { color: var(--teal-bright); }
@@ -1457,5 +1473,6 @@ strong { color: var(--navy); }
 @media (max-width: 38rem) {
   .cookie-banner { flex-direction: column; align-items: stretch; }
   .cookie-banner p { flex: none; }
-  .cookie-banner-actions { justify-content: flex-end; }
+  .cookie-banner-actions { justify-content: stretch; }
+  .cookie-banner-actions .btn { min-height: 44px; }
 }
