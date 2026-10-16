@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bradford Independent — Trailer</title>
+<title>Bradford Independent | Trailer</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
   @font-face {
@@ -380,27 +380,27 @@
   <div class="bg-glow"></div>
   <div class="bg-grid"></div>
 
-  <!-- SCENE 1 — logo sting -->
+  <!-- SCENE 1, logo sting -->
   <section class="scene" data-scene="1" data-dur="4200" aria-label="Bradford Independent">
     <img class="logo-mark" src="assets/img/bi-logo.png" alt="" width="512" height="512">
     <p class="line wordmark">Bradford <em>Independent</em></p>
   </section>
 
-  <!-- SCENE 2 — hook -->
+  <!-- SCENE 2, hook -->
   <section class="scene" data-scene="2" data-dur="5200" aria-label="The problem">
     <h1 class="line">You don't have one big problem.</h1>
     <h1 class="line accent-teal">You have several small ones that add&nbsp;up.</h1>
   </section>
 
-  <!-- SCENE 3 — positioning -->
+  <!-- SCENE 3, positioning -->
   <section class="scene" data-scene="3" data-dur="5200" aria-label="Positioning">
     <p class="kicker line">Bradford Independent</p>
     <h2 class="line">Systems and operational improvement<br>for startups.</h2>
-    <p class="sub line">Seeing how your work <strong>actually</strong> operates — then turning that
+    <p class="sub line">Seeing how your work <strong>actually</strong> operates, then turning that
     understanding into processes, services and digital tools that hold up.</p>
   </section>
 
-  <!-- SCENE 4 — framework -->
+  <!-- SCENE 4, framework -->
   <section class="scene" data-scene="4" data-dur="6000" aria-label="Understand, improve, build">
     <p class="kicker line">The approach</p>
     <div class="framework">
@@ -422,17 +422,17 @@
     <p class="sub line">Business analysis first. Everything else follows from it.</p>
   </section>
 
-  <!-- SCENE 5 — proof -->
+  <!-- SCENE 5, proof -->
   <section class="scene" data-scene="5" data-dur="5600" aria-label="Credibility">
     <p class="kicker line">Why it works</p>
     <div class="proof-items">
-      <p class="proof-item">Direct access — no layers between you and the analysis</p>
+      <p class="proof-item">Direct access, no layers between you and the analysis</p>
       <p class="proof-item">Evidence before opinion, always</p>
       <p class="proof-item">Recommendations you can actually adopt</p>
     </div>
   </section>
 
-  <!-- SCENE 6 — CTA -->
+  <!-- SCENE 6, CTA -->
   <section class="scene" data-scene="6" data-dur="6000" aria-label="Call to action">
     <h2 class="line">Have a problem you're<br>trying to untangle?</h2>
     <p class="line sub">You don't need the solution figured out first.</p>
@@ -478,9 +478,9 @@
   var startOverlay = document.getElementById("start");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Low-key lofi bed (Web Audio, synthesised — no files) ----------
+  /* ---------- Low-key lofi bed (Web Audio, synthesised, no files) ----------
      One warm drone, faint vinyl-style crackle, and a sparse soft note
-     every few seconds. No chord changes, no accents — just texture. */
+     every few seconds. No chord changes, no accents, just texture. */
   var Sound = {
     ctx: null, master: null, muted: false,
     PENTA: [220.00, 261.63, 293.66, 329.63, 392.00],  /* A minor pentatonic */
@@ -499,7 +499,7 @@
       lp.connect(this.master);
       this.master.connect(this.ctx.destination);
 
-      /* warm drone — two barely detuned sines, slow fade in */
+      /* warm drone, two barely detuned sines, slow fade in */
       var self = this;
       [110.00, 164.81].forEach(function (f, i) {
         var o = self.ctx.createOscillator();
@@ -514,7 +514,7 @@
         o.start();
       });
 
-      /* vinyl-ish crackle — sparse pops baked into a looping noise buffer */
+      /* vinyl-ish crackle, sparse pops baked into a looping noise buffer */
       var len = Math.floor(2 * this.ctx.sampleRate);
       var buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
       var d = buf.getChannelData(0);

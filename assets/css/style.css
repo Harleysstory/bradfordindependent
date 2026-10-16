@@ -305,20 +305,18 @@ strong { color: var(--navy); }
   width: 2.4rem;
   height: 2.4rem;
   flex: none;
-  background: var(--navy);
-  border-radius: 9px;
-  padding: 0.3rem;
-  box-shadow: 0 2px 6px rgba(11, 31, 51, 0.22), inset 0 0 0 1px rgba(245, 247, 248, 0.09);
-  transition: box-shadow 0.2s ease;
+  filter: invert(1);
+  transition: filter 0.2s ease, opacity 0.2s ease;
 }
 .brand:hover .brand-mark {
-  box-shadow: 0 3px 10px rgba(0, 166, 166, 0.35), inset 0 0 0 1px rgba(0, 166, 166, 0.4);
+  opacity: 0.7;
 }
 .brand-mark--plain {
   background: transparent;
   border-radius: 0;
   padding: 0;
   box-shadow: none;
+  filter: none;
   width: 2rem;
   height: 2rem;
 }
