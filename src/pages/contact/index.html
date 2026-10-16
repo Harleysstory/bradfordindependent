@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Contact — Start a Conversation | Bradford Independent</title>
+  <meta name="description" content="Start a conversation with Harley Bradford, independent business analyst. Tell him what's happening, what you're trying to achieve, and where you're getting stuck. Replies within a day.">
+  <link rel="canonical" href="https://bradfordindependent.com/contact/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0B1F33">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ROOT}}assets/img/bi-logo-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ROOT}}assets/img/bi-logo-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ROOT}}assets/img/bi-logo-180.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bradford Independent">
+  <meta property="og:title" content="Contact | Bradford Independent">
+  <meta property="og:description" content="Tell me what's happening — start a conversation with Harley Bradford, independent business analyst.">
+  <meta property="og:url" content="https://bradfordindependent.com/contact/">
+  <meta property="og:image" content="https://bradfordindependent.com/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bradfordindependent.com/assets/img/og-image.png">
+
+  <link rel="preload" href="{{ROOT}}assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ROOT}}assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ROOT}}assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- BI_HEADER -->
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><span aria-current="page">Contact</span></li>
+          </ul>
+        </nav>
+        <h1>Tell me what's happening.</h1>
+        <p class="lead">You don't need to have the solution figured out first. Tell me what's
+        happening, what you're trying to achieve, and where you're getting stuck.</p>
+      </div>
+    </section>
+
+    <div class="page-body">
+      <div class="container">
+        <div class="proof-grid">
+
+          <div class="reveal">
+            <h2 style="font-size: clamp(1.3rem, 2.2vw, 1.6rem);">What happens next</h2>
+            <p>Send a message and I'll reply <strong>within a day</strong> — usually with a few
+            questions, because the first conversation is where the analysis starts.</p>
+            <p>There's no obligation and no sales process. If your problem needs something I
+            don't do, I'll tell you honestly and point you in the right direction.</p>
+
+            <dl class="identity-note">
+              <dt>Email</dt>
+              <dd><a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a></dd>
+              <dt>Based in</dt>
+              <dd>Great Yarmouth, Norfolk — working wherever the work takes me</dd>
+              <dt>Elsewhere</dt>
+              <dd>
+                <a href="https://www.linkedin.com/in/harleysstory/" rel="noopener">LinkedIn</a> ·
+                <a href="https://instagram.com/harleysstory" rel="noopener">Instagram</a> ·
+                <a href="https://x.com/harleysstory" rel="noopener">X</a>
+              </dd>
+            </dl>
+          </div>
+
+          <div class="reveal">
+            <form id="contact-form" class="form-grid" novalidate
+              action="https://formsubmit.co/harley@bradfordindependent.com" method="POST">
+              <input type="hidden" name="_subject" value="New enquiry from bradfordindependent.com">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_next" value="https://bradfordindependent.com/contact/?sent=1">
+              <!-- honeypot: hidden from humans, tempting to bots; FormSubmit discards filled submissions -->
+              <div class="field-honeypot" aria-hidden="true">
+                <label for="cf-website">Company website</label>
+                <input id="cf-website" name="_honey" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label for="cf-name">Name</label>
+                  <input id="cf-name" name="name" type="text" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="cf-email">Email</label>
+                  <input id="cf-email" name="email" type="email" autocomplete="email" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="cf-org">Organisation <span class="hint">(optional)</span></label>
+                <input id="cf-org" name="organisation" type="text" autocomplete="organization">
+              </div>
+
+              <div class="field">
+                <label for="cf-message">What's happening?</label>
+                <p class="hint" id="cf-message-hint">What you're trying to achieve, and where you're getting stuck — rough notes are fine.</p>
+                <textarea id="cf-message" name="message" aria-describedby="cf-message-hint" required></textarea>
+              </div>
+
+              <div>
+                <button class="btn btn--primary btn--lg" type="submit">Send message</button>
+              </div>
+
+              <p class="form-note" id="form-sent" hidden>
+                Thanks — your message has been sent. I'll get back to you within a day. If you'd
+                rather email directly, write to <a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a>.
+              </p>
+              <p class="form-note">
+                This form is processed by <a href="https://formsubmit.co" rel="noopener">FormSubmit</a>
+                and forwarded securely to Harley's inbox. Nothing is stored on this website.
+                A hidden spam check helps keep junk out. See the
+                <a href="/privacy-policy/">Privacy Policy</a>.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- BI_FOOTER -->
+
+  <script src="{{ROOT}}assets/js/main.js" defer></script>
+</body>
+</html>

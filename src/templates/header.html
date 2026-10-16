@@ -1,0 +1,23 @@
+<header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="{{ROOT}}assets/img/bi-logo.png" alt="" width="512" height="512">
+        <span class="brand-name">Bradford <em>Independent</em></span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-box" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="/" {{ACTIVE_HOME}}>Home</a></li>
+          <li><a href="/services/" {{ACTIVE_SERVICES}}>Services</a></li>
+          <li><a href="/how-i-work/" {{ACTIVE_HOW}}>How I Work</a></li>
+          <li><a href="/work/" {{ACTIVE_WORK}}>Work</a></li>
+          <li><a href="/about/" {{ACTIVE_ABOUT}}>About</a></li>
+          <li><a class="btn btn--primary btn--small" href="/contact/" {{ACTIVE_CONTACT}}>Start a conversation</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
