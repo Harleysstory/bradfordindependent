@@ -110,6 +110,21 @@
       var honey = form.elements._honey ? form.elements._honey.value : "";
       if (honey) { e.preventDefault(); return; } /* likely a bot */
       if (Date.now() - formOpenedAt < 1000) { e.preventDefault(); return; } /* too fast */
+
+      /* Human submission: POST via fetch so the inline success message can be
+         shown without a page reload. Netlify Forms accepts standard urlencoded
+         POSTs to any path on the site; if fetch fails, fall back to a native
+         form submit so the message still gets through. */
+      e.preventDefault();
+      fetch(form.action || "/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(new FormData(form))
+      }).then(function () {
+        var ok = document.getElementById("form-sent");
+        if (ok) { ok.hidden = false; ok.scrollIntoView({ block: "center" }); }
+        form.style.display = "none";
+      }).catch(function () { form.submit(); });
     });
 
     /* Success state after the post-submit redirect back to ?sent=1 */
