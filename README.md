@@ -51,7 +51,7 @@ src/
       great-yarmouth-arts-festival/
       the-deprivation-of-business-in-great-yarmouth/
     about/index.html           About
-    contact/index.html         Contact form (FormSubmit endpoint)
+    contact/index.html         Contact form (Netlify Forms)
     privacy-policy/            Privacy Policy
     terms-and-conditions/      Terms & Conditions
     404.html                   Custom 404 (simplified header, shared footer)
@@ -112,19 +112,31 @@ Typography uses Space Grotesk for headings and Inter for body text, both self-ho
 
 ## Deployment
 
+The site auto-deploys to **Netlify** on every push to `main`. Netlify reads
+`netlify.toml` at the repo root for the build command (`python build.py`), the
+publish directory (`.`), and response headers — asset caching plus security
+headers including a Content-Security-Policy.
+
+- **Live domain:** [bradfordindependent.com](https://bradfordindependent.com)
+- **DNS:** managed at Bluehost, pointing at Netlify (A record → Netlify's load
+  balancer, `www` → the Netlify site subdomain)
+- **HTTPS:** issued and renewed automatically by Netlify
+- **Contact form:** Netlify Forms with form detection enabled — submissions
+  appear in the Netlify dashboard and are emailed to the site owner. Form
+detection only scans forms present in a deploy, so if the form markup changes,
+the change must be deployed before new fields are recorded.
+
+### Hosting elsewhere
+
 ```bash
 python build.py
 ```
 
-Then deploy the repository root to any static host. The folder structure works as-is on:
-
-- Apache / nginx shared hosting
-- Netlify
-- Cloudflare Pages
-- GitHub Pages
-- Vercel
-
-No configuration required beyond pointing to the repository root.
+Then deploy the repository root to any static host. The folder structure works
+as-is on Apache / nginx shared hosting, Cloudflare Pages, GitHub Pages, or
+Vercel. The `.htaccess` at the repo root supplies the custom 404 page, HTTPS
+and www redirects, caching, and security headers on Apache-based hosts; it is
+ignored by Netlify.
 
 ## Features
 
@@ -133,10 +145,10 @@ No configuration required beyond pointing to the repository root.
 - **Accessibility**: semantic HTML, keyboard navigation, visible focus states, reduced-motion support, WCAG-compliant contrast
 - **SEO**: page titles, meta descriptions, Open Graph, canonical URLs, structured data (JSON-LD), sitemap, robots.txt
 - **Performance**: self-hosted fonts with `preload`, WebP images with `srcset`, no render-blocking JavaScript
-- **Spam protection**: contact form uses honeypot + timing guard via FormSubmit.co
+- **Spam protection**: contact form uses honeypot + timing guard, handled by Netlify Forms
 - **Cookie consent**: lightweight banner stored in localStorage
 - **Custom 404 page** with on-brand copy and navigation back to the site
-- **Privacy Policy and Terms** documenting FormSubmit as the third-party form relay
+- **Privacy Policy and Terms** documenting Netlify as the form processor
 
 ## Content notes
 
