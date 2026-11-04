@@ -31,3 +31,4 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; script-src-attr 'unsafe-hashes' 'sha256-MLhBdHhf6D2ZydXN45CjAdCR/sNK19m7Ri0FMvYsVwY='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action https://formsubmit.co 'self'; base-uri 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
