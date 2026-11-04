@@ -93,9 +93,9 @@
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  /* ---------- Contact form: FormSubmit endpoint ----------
-     The form POSTs to FormSubmit (formsubmit.co), which relays the
-     submission to Harley's inbox. Spam protection: honeypot + timing guard. */
+  /* ---------- Contact form: Netlify Forms ----------
+     The form POSTs to the site itself; Netlify stores the submission and
+     emails it to Harley's inbox. Spam protection: honeypot + timing guard. */
   var form = document.getElementById("contact-form");
 
   if (form) {
@@ -112,7 +112,7 @@
       if (Date.now() - formOpenedAt < 1000) { e.preventDefault(); return; } /* too fast */
     });
 
-    /* Success state after the FormSubmit redirect back to ?sent=1 */
+    /* Success state after the post-submit redirect back to ?sent=1 */
     if (/[?&]sent=1(=|$)/.test(window.location.search)) {
       var ok = document.getElementById("form-sent");
       if (ok) { ok.hidden = false; ok.scrollIntoView({ block: "center" }); }

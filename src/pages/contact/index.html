@@ -76,12 +76,10 @@
 
           <div class="reveal">
             <form id="contact-form" class="form-grid" novalidate
-              action="https://formsubmit.co/harley@bradfordindependent.com" method="POST">
-              <input type="hidden" name="_subject" value="New enquiry from bradfordindependent.com">
-              <input type="hidden" name="_captcha" value="false">
-              <input type="hidden" name="_template" value="table">
-              <input type="hidden" name="_next" value="https://bradfordindependent.com/contact/?sent=1">
-              <!-- honeypot: hidden from humans, tempting to bots; FormSubmit discards filled submissions -->
+              name="contact" method="POST" action="/contact/?sent=1"
+              data-netlify="true" data-netlify-honeypot="_honey">
+              <input type="hidden" name="form-name" value="contact">
+              <!-- honeypot: hidden from humans, tempting to bots; honeypot submissions are discarded -->
               <div class="field-honeypot" aria-hidden="true">
                 <label for="cf-website">Company website</label>
                 <input id="cf-website" name="_honey" type="text" tabindex="-1" autocomplete="off">
@@ -118,9 +116,8 @@
                 rather email directly, write to <a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a>.
               </p>
               <p class="form-note">
-                This form is processed by <a href="https://formsubmit.co" rel="noopener">FormSubmit</a>
-                and forwarded securely to Harley's inbox. Nothing is stored on this website.
-                A hidden spam check helps keep junk out. See the
+                This form is processed by our website host, Netlify, and delivered to
+                Harley's inbox. A hidden spam check helps keep junk out. See the
                 <a href="/privacy-policy/">Privacy Policy</a>.
               </p>
             </form>
