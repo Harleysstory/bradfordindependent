@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bot Privacy Policy | Bradford Independent</title>
+  <meta name="description" content="How the Bradford Independent GitHub tracking bot for Discord handles data: what it stores, what it passes through, and what it never touches.">
+  <link rel="canonical" href="https://bradfordindependent.com/bot/privacy-policy/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0B1F33">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bradford Independent">
+  <meta property="og:title" content="Bot Privacy Policy | Bradford Independent">
+  <meta property="og:description" content="How the Bradford Independent GitHub tracking bot for Discord handles data.">
+  <meta property="og:url" content="https://bradfordindependent.com/bot/privacy-policy/">
+  <meta property="og:image" content="https://bradfordindependent.com/assets/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://bradfordindependent.com/assets/img/og-image.png">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/bi-logo-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/bi-logo-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/bi-logo-180.png">
+
+  <link rel="preload" href="../../assets/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <img class="brand-mark" src="../../assets/img/bi-logo.png" alt="" width="512" height="512">
+        <span class="brand-name">Bradford <em>Independent</em></span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+          <span class="nav-toggle-box" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Menu</span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/services/">Services</a></li>
+          <li><a href="/how-i-work/">How I Work</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a class="btn btn--primary btn--small" href="/contact/">Start a conversation</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/privacy-policy/">Privacy</a></li>
+            <li><span aria-current="page">Discord Bot</span></li>
+          </ul>
+        </nav>
+        <h1>Bot Privacy Policy</h1>
+        <p class="lead">The short version: the bot is a relay, not a record keeper. It takes
+        activity notifications from GitHub repositories that server administrators have asked
+        it to watch and posts a summary message in a Discord channel. It stores almost nothing,
+        reads no messages, and shares nothing with anyone else.</p>
+      </div>
+    </section>
+
+    <div class="page-body">
+      <div class="container measure">
+
+        <div class="note-strip" style="margin-bottom: 2.5rem;">
+          <strong>Last updated: November 2026.</strong> This policy covers the Bradford
+          Independent Discord bot ("the bot", application ID 1567388231694164008), operated by
+          Harley Bradford ("Bradford Independent", "we", "us"). For our website and
+          consultancy generally, see the main <a href="/privacy-policy/">privacy policy</a>.
+        </div>
+
+        <h2>Who this policy is for</h2>
+        <p>This policy applies to members of Discord servers that use the bot, and to people
+        whose activity on GitHub appears in those servers. If you are a server administrator,
+        you decide which repositories the bot watches and which channels it posts in; if you
+        are a server member or a GitHub contributor, your data is handled as described below.</p>
+
+        <h2>What the bot receives and posts</h2>
+        <p>When a repository owner connects the bot to a GitHub repository, GitHub sends the
+        bot a notification whenever something happens in that repository — for example a
+        commit is pushed, a pull request or issue is opened, or a release is published. The
+        bot then posts a summary message in the configured Discord channel. These messages may
+        contain:</p>
+        <ul>
+          <li>repository, branch and release names;</li>
+          <li>commit messages and short commit identifiers;</li>
+          <li>pull request, issue and review titles and descriptions;</li>
+          <li>GitHub usernames (handles) of the people who performed the action; and</li>
+          <li>links to the relevant pages on github.com.</li>
+        </ul>
+        <p>This information comes from GitHub at the moment of the event. The bot does not
+        browse repositories, does not read source code, and does not make any other requests
+        to GitHub beyond receiving these notifications.</p>
+
+        <h2>What the bot stores</h2>
+        <p>To know where to post, the bot keeps a small configuration file on its host server
+        containing, for each Discord server that uses it:</p>
+        <ul>
+          <li>the Discord server ID and channel IDs chosen by its administrators;</li>
+          <li>the names of the repositories being watched;</li>
+          <li>which event types administrators have chosen to receive; and</li>
+          <li>optional links between a GitHub username and a Discord user ID, created only
+          when an administrator chooses to link them, so that person can be notified of
+          activity.</li>
+        </ul>
+        <p>This configuration contains <strong>no message content, no personal
+        conversations, and no information about you</strong> beyond the identifiers listed
+        above. It can be inspected or deleted on request at any time (see Contact below).
+        Removing the bot from a server, or an administrator running the bot's unwatch
+        command, deletes the configuration for that server or repository.</p>
+
+        <h2>What the bot does not do</h2>
+        <ul>
+          <li>It does <strong>not</strong> read or store any Discord messages — it has no
+          "message content" access and only sends its own announcements.</li>
+          <li>It does <strong>not</strong> use analytics, advertising, or tracking of any
+          kind.</li>
+          <li>It does <strong>not</strong> sell, share or transfer data to any third party.</li>
+          <li>It does <strong>not</strong> profile users or make automated decisions about
+          anyone.</li>
+        </ul>
+
+        <h2>Where data lives</h2>
+        <p>The bot's configuration file is stored on the server that hosts the bot, secured
+        with modern encryption in transit, and never leaves that server except in the form of
+        the messages it posts to Discord. Discord messages themselves are governed by
+        <a href="https://discord.com/terms" rel="noopener">Discord's terms</a> and
+        <a href="https://discord.com/privacy" rel="noopener">privacy policy</a>. GitHub event
+        data is governed by <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" rel="noopener">GitHub's
+        privacy statement</a>.</p>
+
+        <h2>Legal basis and your rights</h2>
+        <p>The bot processes this limited data on the basis of the legitimate interests of
+        server administrators in receiving development activity notifications, at their
+        request and under their control. Under UK data protection law (the UK GDPR and Data
+        Protection Act 2018) you have the right to be told what data is held, to see a copy
+        of it, to have it corrected or deleted, and to object to its use. Since the data held
+        is minimal, these requests are quick to fulfil.</p>
+
+        <h2>Data retention</h2>
+        <p>Configuration for a server or repository is kept only while the bot remains
+        connected to it, and is deleted when the bot is removed from the server or the
+        repository is unwatched. Event notifications themselves are not archived — they are
+        relayed to Discord within seconds and not retained by the bot.</p>
+
+        <h2>Changes to this policy</h2>
+        <p>If this policy changes, the "last updated" date at the top of this page will
+        change too.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about the bot, a copy of the data held for your server, or a deletion
+        request? Email
+        <a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a> —
+        we'll get back to you within a day.</p>
+      </div>
+    </div>
+
+    <section class="cta-band section" aria-labelledby="cta-title">
+      <div class="container cta-inner">
+        <div class="reveal">
+          <h2 id="cta-title">Still have a question?</h2>
+          <p class="lead">Email Harley directly, he's the only person who handles the data.</p>
+          <div class="hero-actions" style="margin-top: 2rem;">
+            <a class="btn btn--primary btn--lg" href="/contact/">Start a conversation</a>
+          </div>
+        </div>
+        <div class="cta-panel reveal">
+          <h3>Or go straight to the source</h3>
+          <ul>
+            <li><a href="mailto:harley@bradfordindependent.com">harley@bradfordindependent.com</a></li>
+            <li>I'll get back to you within a day.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <img class="brand-mark brand-mark--plain" src="../../assets/img/bi-logo.png" alt="" width="512" height="512">
+            <span class="brand-name">Bradford <em>Independent</em></span>
+          </a>
+          <p class="footer-intro">Independent business analysis helping organisations improve their systems, processes and digital services.</p>
+        </div>
+        <nav class="footer-col" aria-label="Explore">
+          <h2 class="footer-heading">Explore</h2>
+          <ul class="footer-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/how-i-work/">How I Work</a></li>
+            <li><a href="/work/">Work</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </nav>
+        <nav class="footer-col" aria-label="Information">
+          <h2 class="footer-heading">Information</h2>
+          <ul class="footer-list">
+            <li><a href="/privacy-policy/">Privacy Policy</a></li>
+            <li><a href="/terms-and-conditions/">Terms &amp; Conditions</a></li>
+            <li><a href="#" onclick="window.biCookiePreferences &amp;&amp; window.biCookiePreferences(); return false;">Cookie preferences</a></li>
+          </ul>
+        </nav>
+        <div class="footer-col">
+          <h2 class="footer-heading">Connect</h2>
+          <ul class="footer-social">
+            <li><a class="footer-social-icon" href="mailto:harley@bradfordindependent.com" aria-label="Email Harley"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm17 2.4-7.4 5.3a1 1 0 0 1-1.2 0L4 7.4V18h16V7.4z"/></svg></a></li>
+            <li><a class="footer-social-icon" href="https://www.linkedin.com/in/harleysstory/" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8.5h4V24h-4V8.5zM8.5 8.5h3.8v2.1h.05c.53-1 1.83-2.1 3.76-2.1 4 0 4.75 2.65 4.75 6.1V24h-4v-6.9c0-1.65-.03-3.75-2.3-3.75-2.3 0-2.65 1.8-2.65 3.65V24h-4V8.5z"/></svg></a></li>
+            <li><a class="footer-social-icon" href="https://instagram.com/harleysstory" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.62c-3.15 0-3.52.01-4.76.07-.9.04-1.39.19-1.71.32-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.13.32-.28.81-.32 1.71-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.04.9.19 1.39.32 1.71.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.13.81.28 1.71.32 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.9-.04 1.39-.19 1.71-.32.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.13-.32.28-.81.32-1.71.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.04-.9-.19-1.39-.32-1.71a2.85 2.85 0 0 0-.69-1.06 2.85 2.85 0 0 0-1.06-.69c-.32-.13-.81-.28-1.71-.32-1.24-.06-1.61-.07-4.76-.07zm0 2.76a5.46 5.46 0 1 1 0 10.92 5.46 5.46 0 0 1 0-10.92zm0 9a3.54 3.54 0 1 0 0-7.08 3.54 3.54 0 0 0 0 7.08zm6.95-9.18a1.28 1.28 0 1 1-2.55 0 1.28 1.28 0 0 1 2.55 0z"/></svg></a></li>
+            <li><a class="footer-social-icon" href="https://x.com/harleysstory" rel="noopener" aria-label="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Bradford Independent. All rights reserved.</p>
+        <p class="footer-credit">Harley Bradford, Independent business analyst &amp; consultant, Great Yarmouth, Norfolk</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/main.js" defer></script>
+</body>
+</html>
